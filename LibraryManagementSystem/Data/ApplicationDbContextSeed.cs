@@ -79,6 +79,70 @@ namespace LibraryManagementSystem.Data
                 }
             }
 
+            // Add Job Titles
+            if (!db.JobTitles.Any())
+            {
+                var jobTitle1 = new JobTitle()
+                {
+                    Name = "Software Developer"
+                };
+
+                var jobTitle2 = new JobTitle()
+                {
+                    Name = "Teacher"
+                };
+
+                var jobTitle3 = new JobTitle()
+                {
+                    Name = "Doctor"
+                };
+                db.JobTitles.Add(jobTitle1);
+                db.JobTitles.Add(jobTitle2);
+                db.JobTitles.Add(jobTitle3);
+                db.SaveChanges();
+            }
+
+            // Add Countries
+            if (!db.Countries.Any())
+            {
+                var country = new Country()
+                {
+                    Name = "Egypt"
+                };
+                db.Countries.Add(country);
+                db.SaveChanges();
+
+
+                // Add City
+                if (!db.Cities.Any())
+                {
+                    var city = new City()
+                    {
+                        Name = "Alexandria",
+                        CountryId = country.Id
+                    };
+                    db.Cities.Add(city);
+                    db.SaveChanges();
+                }
+            }
+
+            // Add Billing Method
+            if (!db.PaymentMethods.Any())
+            {
+                var method = new PaymentMethod()
+                {
+                    Name = "Cash"
+                };
+
+                var method2 = new PaymentMethod()
+                {
+                    Name = "Card"
+                };
+
+                db.PaymentMethods.Add(method);
+                db.PaymentMethods.Add(method2);
+                db.SaveChanges();
+            }
 
         }
     }

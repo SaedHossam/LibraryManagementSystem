@@ -20,6 +20,20 @@ namespace LibraryManagementSystem.Models
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
+        public virtual DbSet<PaymentMethod> PaymentMethods { get; set; }
+        public virtual DbSet<City> Cities { get; set; }
+        public virtual DbSet<Country> Countries { get; set; }
+        public virtual DbSet<JobTitle> JobTitles { get; set; }
+        public virtual DbSet<Category> Categories { get; set; }
+        public virtual DbSet<Book> Books { get; set; }
+        public virtual DbSet<CreditCard> CreditCards { get; set; }
+        public virtual DbSet<Customer> Customers { get; set; }
+        public virtual DbSet<BorrowingInvoice> BorrowingInvoices { get; set; }
+        public virtual DbSet<BorrowingInvoiceItem> BorrowingInvoiceItems { get; set; }
+        public virtual DbSet<SellingInvoice> SellingInvoices { get; set; }
+        public virtual DbSet<SellingInvoiceItem> SellingInvoiceItems { get; set; }
+        public virtual DbSet<ReturningInvoice> ReturningInvoices { get; set; }
+        public virtual DbSet<ReturningInvoiceItem> ReturningInvoiceItems { get; set; }
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {
@@ -28,6 +42,15 @@ namespace LibraryManagementSystem.Models
         public static ApplicationDbContext Create()
         {
             return new ApplicationDbContext();
+        }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<City>()
+                .HasRequired(c => c.Country)
+                .WithMany(a => a.Cities)
+                .WillCascadeOnDelete(false);
         }
     }
 }

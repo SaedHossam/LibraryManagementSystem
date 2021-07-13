@@ -175,9 +175,29 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202107132229585_AllModels.cs" />
+    <Compile Include="Migrations\202107132229585_AllModels.Designer.cs">
+      <DependentUpon>202107132229585_AllModels.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\BasicInvoice.cs" />
+    <Compile Include="Models\BorrowingInvoice.cs" />
+    <Compile Include="Models\BorrowingInvoiceItem.cs" />
+    <Compile Include="Models\PaymentMethod.cs" />
+    <Compile Include="Models\Book.cs" />
+    <Compile Include="Models\Category.cs" />
+    <Compile Include="Models\City.cs" />
+    <Compile Include="Models\Country.cs" />
+    <Compile Include="Models\CreditCard.cs" />
+    <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\JobTitle.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\ReturningInvoice.cs" />
+    <Compile Include="Models\ReturningInvoiceItem.cs" />
+    <Compile Include="Models\SellingInvoice.cs" />
+    <Compile Include="Models\SellingInvoiceItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -190,6 +210,8 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Resources\images\user-f.png" />
+    <Content Include="Resources\images\user-m.png" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
@@ -253,6 +275,11 @@
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.4.1.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\202107132229585_AllModels.resx">
+      <DependentUpon>202107132229585_AllModels.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
