@@ -1,4 +1,5 @@
-﻿using Microsoft.Owin;
+﻿using LibraryManagementSystem.Data;
+using Microsoft.Owin;
 using Owin;
 
 [assembly: OwinStartupAttribute(typeof(LibraryManagementSystem.Startup))]
@@ -9,6 +10,7 @@ namespace LibraryManagementSystem
         public void Configuration(IAppBuilder app)
         {
             ConfigureAuth(app);
+            ApplicationDbContextSeed.SeedEssentials();
         }
     }
 }
