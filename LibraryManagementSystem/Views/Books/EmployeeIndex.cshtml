@@ -4,8 +4,14 @@
 }
 
 <h2>Book List</h2>
-
-<table class="table">
+<div class="row">
+    <div class="col mx-5 mb-3">
+        <div class="card card-body">
+            <input id="search-book" class="form-control" type="text" placeholder="Search by Name or Category" style="margin-left:auto; margin-right:auto; margin-bottom:10px" />
+        </div>
+    </div>
+</div>
+<table class="table" id="bookList">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.Category)
@@ -62,12 +68,32 @@
             <td>
                 @Html.DisplayFor(modelItem => item.FinePerDay)
             </td>
-            @*<td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-            </td>*@
+
         </tr>
     }
 
 </table>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $('#search-book').on('keyup', function () {
+            var value = $(this).val()
+            value = value.toLowerCase();
+            $('table tr').each(function (result) {
+                if (result !== 0) {
+                    var category = $(this).find("td:nth-child(1)").text().toLowerCase();
+                    var name = $(this).find("td:nth-child(2)").text().toLowerCase();
+
+                    if (category.indexOf(value) < 0 && name.indexOf(value) < 0) {
+                        $(this).hide();
+                    }
+                    else {
+                        $(this).show();
+                    }
+                }
+            })
+        })
+
+    </script>
+}
