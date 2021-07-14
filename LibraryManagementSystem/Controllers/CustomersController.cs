@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using LibraryManagementSystem.Models;
+using LibraryManagementSystem.ViewModels;
 
 namespace LibraryManagementSystem.Controllers
 {
@@ -18,7 +20,23 @@ namespace LibraryManagementSystem.Controllers
         public ActionResult Index()
         {
             var customers = db.Customers.Include(c => c.City).Include(c => c.Country).Include(c => c.JobTitle);
-            return View(customers.ToList());
+
+            var list = new List<CustomerViewModel>();
+            foreach(var c in customers)
+            {
+                list.Add(new CustomerViewModel() {
+                    Id = c.Id,
+                    City = c.City.Name,
+                    Country = c.Country.Name,
+                    Gender = c.Gender == true? "Male" : "Female",
+                    Email = c.Email,
+                    DateOfBirth = c.DateOfBirth,
+                    Name = c.Name,
+                    Phone = c.Phone,
+                    JobTitle = c.JobTitle.Name
+                });
+            }
+            return View(list);
         }
 
         // GET: Customers/Details/5
@@ -28,11 +46,24 @@ namespace LibraryManagementSystem.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Customer customer = db.Customers.Find(id);
-            if (customer == null)
+            Customer c = db.Customers.Find(id);
+            if (c == null)
             {
                 return HttpNotFound();
             }
+            var customer = new CustomerDetailsViewModel() {
+                Id = c.Id,
+                City = c.City.Name,
+                Country = c.Country.Name,
+                Gender = c.Gender == true ? "Male" : "Female",
+                Email = c.Email,
+                DateOfBirth = c.DateOfBirth,
+                Name = c.Name,
+                Phone = c.Phone,
+                JobTitle = c.JobTitle.Name,
+                Image = c.Image
+            };
+            ViewBag.Image = c.Image;
             return View(customer);
         }
 
@@ -50,10 +81,16 @@ namespace LibraryManagementSystem.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,Gender,Image,JobTitleId,DateOfBirth,Email,Phone,CountryId,CityId")] Customer customer)
+        public ActionResult Create(Customer customer, HttpPostedFileBase ImageFile)
         {
             if (ModelState.IsValid)
             {
+                // TODO: Change Image Name to new GUID + image extention
+                string FileName = ImageFile.FileName;
+                // string Name = Guid.NewGuid().ToString();
+                string Path = "~/Resources/images/" + FileName;
+                ImageFile.SaveAs(Server.MapPath(Path));
+                customer.Image = Path;
                 db.Customers.Add(customer);
                 db.SaveChanges();
                 return RedirectToAction("Index");

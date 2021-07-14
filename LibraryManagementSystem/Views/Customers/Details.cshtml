@@ -1,37 +1,36 @@
-﻿@model LibraryManagementSystem.Models.Customer
+﻿@model LibraryManagementSystem.ViewModels.CustomerDetailsViewModel
 
 @{
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
+<h2>Customer Details</h2>
 
 <div>
-    <h4>Customer</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.City.Name)
+            @Html.DisplayNameFor(model => model.City)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.City.Name)
+            @Html.DisplayFor(model => model.City)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Country.Name)
+            @Html.DisplayNameFor(model => model.Country)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Country.Name)
+            @Html.DisplayFor(model => model.Country)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.JobTitle.Name)
+            @Html.DisplayNameFor(model => model.JobTitle)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.JobTitle.Name)
+            @Html.DisplayFor(model => model.JobTitle)
         </dd>
 
         <dt>
@@ -55,7 +54,7 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Image)
+            <img src="@Url.Content(ViewBag.Image)"/>
         </dd>
 
         <dt>
