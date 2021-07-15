@@ -20,15 +20,15 @@
                     {
                         if (User.IsInRole("Admin"))
                         {
-                            <li>@Html.ActionLink("Books", "Index", "Books", new { area = "" }, new { @class = "nav-item nav-link" })</li>
-                            <li>@Html.ActionLink("Categories", "Index", "Categories", new { area = "" }, new { @class = "nav-item nav-link" })</li>
+                            <li>@Html.ActionLink("Books", "Index", "Books", null, new { @class = "nav-item nav-link" })</li>
+                            <li>@Html.ActionLink("Categories", "Index", "Categories", null, new { @class = "nav-item nav-link" })</li>
                         }
                         else
                         {
-                            <li>@Html.ActionLink("Books", "EmployeeIndex", "Books", new { area = "" }, new { @class = "nav-item nav-link" })</li>
+                            <li>@Html.ActionLink("Books", "EmployeeIndex", "Books", null, new { @class = "nav-item nav-link" })</li>
                         }
-                        <li>@Html.ActionLink("Customers", "Index", "Customers", new { area = "" }, new { @class = "nav-item nav-link" })</li>
-                        <li>@Html.ActionLink("Selling Invoice", "Index", "SellingInvoices", new { area = "" }, new { @class = "nav-item nav-link" })</li>
+                        <li>@Html.ActionLink("Customers", "Index", "Customers", null, new { @class = "nav-item nav-link" })</li>
+                        <li>@Html.ActionLink("Selling Invoice", "Index", "SellingInvoices", null, new { @class = "nav-item nav-link" })</li>
                     }
                 </ul>
 
