@@ -12,12 +12,12 @@ using LibraryManagementSystem.ViewModels;
 
 namespace LibraryManagementSystem.Controllers
 {
-    [Authorize(Roles = Constants.Admin)]
     public class BooksController : Controller
     {
         private readonly ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Books
+        [Authorize(Roles = Constants.Admin)]
         public ActionResult Index()
         {
             var books = db.Books.Include(b => b.Category);
@@ -46,7 +46,7 @@ namespace LibraryManagementSystem.Controllers
             }
             return View(bookList);
         }
-
+        [Authorize(Roles = Constants.Admin)]
         // GET: Books/Details/5
         public ActionResult Details(int? id)
         {
@@ -62,6 +62,7 @@ namespace LibraryManagementSystem.Controllers
             return View(book);
         }
 
+        [Authorize(Roles = Constants.Admin)]
         // GET: Books/Create
         public ActionResult Create()
         {
@@ -74,6 +75,7 @@ namespace LibraryManagementSystem.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = Constants.Admin)]
         public ActionResult Create([Bind(Include = "Id,Name,CategoryId,NumberOfCopies,AvailableNumberOfCopies,PriceOfReservation,ReservationPerieodInDays,PriceOfSelling,Cost,FinePerDay")] Book book)
         {
             if (ModelState.IsValid)
@@ -88,6 +90,7 @@ namespace LibraryManagementSystem.Controllers
         }
 
         // GET: Books/Edit/5
+        [Authorize(Roles = Constants.Admin)]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -108,6 +111,7 @@ namespace LibraryManagementSystem.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = Constants.Admin)]
         public ActionResult Edit([Bind(Include = "Id,Name,CategoryId,NumberOfCopies,AvailableNumberOfCopies,PriceOfReservation,ReservationPerieodInDays,PriceOfSelling,Cost,FinePerDay")] Book book)
         {
             if (ModelState.IsValid)
@@ -121,6 +125,7 @@ namespace LibraryManagementSystem.Controllers
         }
 
         // GET: Books/Delete/5
+        [Authorize(Roles = Constants.Admin)]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -138,6 +143,7 @@ namespace LibraryManagementSystem.Controllers
         // POST: Books/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = Constants.Admin)]
         public ActionResult DeleteConfirmed(int id)
         {
             Book book = db.Books.Find(id);
