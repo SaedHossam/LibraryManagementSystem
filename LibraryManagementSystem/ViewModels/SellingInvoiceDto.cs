@@ -14,10 +14,11 @@ namespace LibraryManagementSystem.ViewModels
 
         [DataType(DataType.Date)]
         public DateTime Date { get; set; }
-
+        [Display(Name ="Sub Total $")]
         public int SubTotal { get; set; }
-
+        [Display(Name = "Discount %")]
         public int Discount { get; set; }
+        [Display(Name = "Sub Total $")]
         public int Total { get; set; }
         //public ICollection<SellingInvoiceItemDto> Items { get; set; }
 
