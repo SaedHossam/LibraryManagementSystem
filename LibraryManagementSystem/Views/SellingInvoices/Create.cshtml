@@ -140,6 +140,8 @@
         let subTotal = 0;
         let disscount = 0;
         let selectedBooks = [];
+        let isUpdate = false;
+        let editBookIndex = -1;
 
         $(function () {
 
@@ -210,6 +212,10 @@
                 alert("Error!\nChoose Book and Enter Quantity!");
             }
             else {
+                // Check if update
+                if (isUpdate) {
+                    return quantityAvalible(bookId, quantity, price);
+                }
                 // Check if not in selectedBooks
                 if (bookExists(bookId)) {
                     alert("Error!\nBook already Exists in invoice!");
@@ -232,14 +238,18 @@
             var url = "/SellingInvoices/IsQuantityAvailable";
 
             $.ajax({
-                url: url,//Method to call
-                data: { bookId: bookId, quantity: quantity },//Pass data to method if needed
+                url: url,
+                data: { bookId: bookId, quantity: quantity },
                 type: 'GET',
                 success: function (data) {
                     if (data === 'False') {
                         alert("Error\n Ordered quantity is more than avalible quantity!");
                     } else {
-                        addBook(bookId, quantity, price)
+                        if (isUpdate) {
+                            updateList()
+                        } else {
+                            addBook(bookId, quantity, price)
+                        }
                     }
                 }
             })
@@ -247,19 +257,18 @@
 
         function addBook(bookId, quantity, price) {
             var bookName = $("#books option:selected").text();
-            var row = `<tr>
+            var row = `<tr id = "tr_${bookId}">
                                 <td>${bookName}</td>
                                 <td>${quantity}</td>
                                 <td>${price}</td>
                                 <td>${quantity * price}</td>
-                                <td></td>
+                                <td><button class="btn btn-warning" onclick="EditItem(${bookId})">Edit</button></td>
                            </tr>`
             $('#itemsTable tr:last').after(row);
-            subTotal += (quantity * price);
-            total = subTotal - parseInt(subTotal * disscount / 100, 10);
-            $("#total").val(total);
-            $("#subTotal").val(subTotal);
             selectedBooks.push({ BookId: bookId, Quantity: quantity, SubTotal: quantity * price });
+            updateTotalSubTotal();
+
+            $('#itmQty').val(0);
         }
 
         function AddInvoice() {
@@ -284,7 +293,6 @@
                 Items: selectedBooks
             };
             PostInvoice(sellingInvoice);
-            //console.log(sellingInvoice);
         }
 
         function PostInvoice(sellingInvoice) {
@@ -302,7 +310,53 @@
             })
         }
 
-        
+        function EditItem(bookId) {
+            isUpdate = true;
+            for (var i = 0; i < selectedBooks.length; i++) {
+                if (selectedBooks[i].BookId == bookId) {
+                    editBookIndex = i;
+                    $("#books option:selected").val(selectedBooks[i].BookId);
+                    $('#price').val(getBookPrice(selectedBooks[i].BookId));
+                    $('#itmQty').val(selectedBooks[i].Quantity);
+                }
+            }
+        }
+
+
+        function updateList(){
+            var bookId = $("#books option:selected").val();
+            var quantity = Number($('#itmQty').val());
+            var price = Number($('#price').val());
+            var bookName = $("#books option:selected").text();
+
+            // Update List
+            selectedBooks[editBookIndex].BookId = bookId;
+            selectedBooks[editBookIndex].SubTotal = price * quantity;
+            selectedBooks[editBookIndex].Quantity = quantity;
+
+            // Update Ui
+            $(`#tr_${bookId}`).find('td').eq(0).html(bookName);
+            $(`#tr_${bookId}`).find('td').eq(1).html(quantity);
+            $(`#tr_${bookId}`).find('td').eq(2).html(price);
+            $(`#tr_${bookId}`).find('td').eq(3).html(price * quantity);
+
+            updateTotalSubTotal();
+
+            // reset values
+            isUpdate = false;
+            editBookIndex = -1;
+        }
+
+        function updateTotalSubTotal() {
+            subTotal = total = 0;
+            for (var i = 0; i < selectedBooks.length; i++) {
+                subTotal += selectedBooks[i].SubTotal;
+            }
+            total = subTotal - parseInt(subTotal * disscount / 100, 10);
+            $("#total").val(total);
+            $("#subTotal").val(subTotal);
+            $('#itmQty').val(0);
+        }
 
     </script>
 }
