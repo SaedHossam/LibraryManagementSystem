@@ -3,7 +3,7 @@ namespace LibraryManagementSystem.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class AllModels : DbMigration
+    public partial class Initial : DbMigration
     {
         public override void Up()
         {
@@ -50,22 +50,21 @@ namespace LibraryManagementSystem.Migrations
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
-                        CusomerId = c.Int(nullable: false),
+                        CustomerId = c.Int(nullable: false),
                         Date = c.DateTime(nullable: false),
                         SubTotal = c.Int(nullable: false),
                         Discount = c.Int(nullable: false),
                         Total = c.Int(nullable: false),
-                        PaymentMethodId = c.Int(nullable: false),
+                        PaymentMethodId = c.Int(),
                         CreditCardId = c.Int(),
-                        Customer_Id = c.Int(),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.CreditCards", t => t.CreditCardId)
-                .ForeignKey("dbo.Customers", t => t.Customer_Id)
-                .ForeignKey("dbo.PaymentMethods", t => t.PaymentMethodId, cascadeDelete: true)
+                .ForeignKey("dbo.Customers", t => t.CustomerId, cascadeDelete: true)
+                .ForeignKey("dbo.PaymentMethods", t => t.PaymentMethodId)
+                .Index(t => t.CustomerId)
                 .Index(t => t.PaymentMethodId)
-                .Index(t => t.CreditCardId)
-                .Index(t => t.Customer_Id);
+                .Index(t => t.CreditCardId);
             
             CreateTable(
                 "dbo.CreditCards",
@@ -148,22 +147,21 @@ namespace LibraryManagementSystem.Migrations
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
-                        CusomerId = c.Int(nullable: false),
+                        CustomerId = c.Int(nullable: false),
                         Date = c.DateTime(nullable: false),
                         SubTotal = c.Int(nullable: false),
                         Discount = c.Int(nullable: false),
                         Total = c.Int(nullable: false),
-                        PaymentMethodId = c.Int(nullable: false),
+                        PaymentMethodId = c.Int(),
                         CreditCardId = c.Int(),
-                        Customer_Id = c.Int(),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.CreditCards", t => t.CreditCardId)
-                .ForeignKey("dbo.Customers", t => t.Customer_Id)
-                .ForeignKey("dbo.PaymentMethods", t => t.PaymentMethodId, cascadeDelete: true)
+                .ForeignKey("dbo.Customers", t => t.CustomerId, cascadeDelete: true)
+                .ForeignKey("dbo.PaymentMethods", t => t.PaymentMethodId)
+                .Index(t => t.CustomerId)
                 .Index(t => t.PaymentMethodId)
-                .Index(t => t.CreditCardId)
-                .Index(t => t.Customer_Id);
+                .Index(t => t.CreditCardId);
             
             CreateTable(
                 "dbo.ReturningInvoiceItems",
@@ -186,22 +184,21 @@ namespace LibraryManagementSystem.Migrations
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
-                        CusomerId = c.Int(nullable: false),
+                        CustomerId = c.Int(nullable: false),
                         Date = c.DateTime(nullable: false),
                         SubTotal = c.Int(nullable: false),
                         Discount = c.Int(nullable: false),
                         Total = c.Int(nullable: false),
-                        PaymentMethodId = c.Int(nullable: false),
+                        PaymentMethodId = c.Int(),
                         CreditCardId = c.Int(),
-                        Customer_Id = c.Int(),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.CreditCards", t => t.CreditCardId)
-                .ForeignKey("dbo.Customers", t => t.Customer_Id)
-                .ForeignKey("dbo.PaymentMethods", t => t.PaymentMethodId, cascadeDelete: true)
+                .ForeignKey("dbo.Customers", t => t.CustomerId, cascadeDelete: true)
+                .ForeignKey("dbo.PaymentMethods", t => t.PaymentMethodId)
+                .Index(t => t.CustomerId)
                 .Index(t => t.PaymentMethodId)
-                .Index(t => t.CreditCardId)
-                .Index(t => t.Customer_Id);
+                .Index(t => t.CreditCardId);
             
             CreateTable(
                 "dbo.SellingInvoiceItems",
@@ -210,7 +207,7 @@ namespace LibraryManagementSystem.Migrations
                         Id = c.Int(nullable: false, identity: true),
                         SellingInvoiceId = c.Int(nullable: false),
                         BookId = c.Int(nullable: false),
-                        Quabtity = c.Int(nullable: false),
+                        Quantity = c.Int(nullable: false),
                         SubTotal = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.Id)
@@ -321,12 +318,12 @@ namespace LibraryManagementSystem.Migrations
             DropForeignKey("dbo.SellingInvoiceItems", "SellingInvoiceId", "dbo.SellingInvoices");
             DropForeignKey("dbo.SellingInvoiceItems", "BookId", "dbo.Books");
             DropForeignKey("dbo.SellingInvoices", "PaymentMethodId", "dbo.PaymentMethods");
-            DropForeignKey("dbo.SellingInvoices", "Customer_Id", "dbo.Customers");
+            DropForeignKey("dbo.SellingInvoices", "CustomerId", "dbo.Customers");
             DropForeignKey("dbo.SellingInvoices", "CreditCardId", "dbo.CreditCards");
             DropForeignKey("dbo.ReturningInvoiceItems", "ReturningInvoice_Id", "dbo.ReturningInvoices");
             DropForeignKey("dbo.ReturningInvoiceItems", "Id", "dbo.BorrowingInvoiceItems");
             DropForeignKey("dbo.ReturningInvoices", "PaymentMethodId", "dbo.PaymentMethods");
-            DropForeignKey("dbo.ReturningInvoices", "Customer_Id", "dbo.Customers");
+            DropForeignKey("dbo.ReturningInvoices", "CustomerId", "dbo.Customers");
             DropForeignKey("dbo.ReturningInvoices", "CreditCardId", "dbo.CreditCards");
             DropForeignKey("dbo.PaymentMethodCustomers", "Customer_Id", "dbo.Customers");
             DropForeignKey("dbo.PaymentMethodCustomers", "PaymentMethod_Id", "dbo.PaymentMethods");
@@ -336,7 +333,7 @@ namespace LibraryManagementSystem.Migrations
             DropForeignKey("dbo.Customers", "CityId", "dbo.Cities");
             DropForeignKey("dbo.Cities", "CountryId", "dbo.Countries");
             DropForeignKey("dbo.Customers", "CountryId", "dbo.Countries");
-            DropForeignKey("dbo.BorrowingInvoices", "Customer_Id", "dbo.Customers");
+            DropForeignKey("dbo.BorrowingInvoices", "CustomerId", "dbo.Customers");
             DropForeignKey("dbo.BorrowingInvoices", "CreditCardId", "dbo.CreditCards");
             DropForeignKey("dbo.BorrowingInvoiceItems", "BorrowingInvoiceId", "dbo.BorrowingInvoices");
             DropForeignKey("dbo.BorrowingInvoiceItems", "BookId", "dbo.Books");
@@ -350,22 +347,22 @@ namespace LibraryManagementSystem.Migrations
             DropIndex("dbo.AspNetRoles", "RoleNameIndex");
             DropIndex("dbo.SellingInvoiceItems", new[] { "BookId" });
             DropIndex("dbo.SellingInvoiceItems", new[] { "SellingInvoiceId" });
-            DropIndex("dbo.SellingInvoices", new[] { "Customer_Id" });
             DropIndex("dbo.SellingInvoices", new[] { "CreditCardId" });
             DropIndex("dbo.SellingInvoices", new[] { "PaymentMethodId" });
+            DropIndex("dbo.SellingInvoices", new[] { "CustomerId" });
             DropIndex("dbo.ReturningInvoiceItems", new[] { "ReturningInvoice_Id" });
             DropIndex("dbo.ReturningInvoiceItems", new[] { "Id" });
-            DropIndex("dbo.ReturningInvoices", new[] { "Customer_Id" });
             DropIndex("dbo.ReturningInvoices", new[] { "CreditCardId" });
             DropIndex("dbo.ReturningInvoices", new[] { "PaymentMethodId" });
+            DropIndex("dbo.ReturningInvoices", new[] { "CustomerId" });
             DropIndex("dbo.Cities", new[] { "CountryId" });
             DropIndex("dbo.Customers", new[] { "CityId" });
             DropIndex("dbo.Customers", new[] { "CountryId" });
             DropIndex("dbo.Customers", new[] { "JobTitleId" });
             DropIndex("dbo.CreditCards", new[] { "CustomerId" });
-            DropIndex("dbo.BorrowingInvoices", new[] { "Customer_Id" });
             DropIndex("dbo.BorrowingInvoices", new[] { "CreditCardId" });
             DropIndex("dbo.BorrowingInvoices", new[] { "PaymentMethodId" });
+            DropIndex("dbo.BorrowingInvoices", new[] { "CustomerId" });
             DropIndex("dbo.BorrowingInvoiceItems", new[] { "BookId" });
             DropIndex("dbo.BorrowingInvoiceItems", new[] { "BorrowingInvoiceId" });
             DropIndex("dbo.Books", new[] { "CategoryId" });

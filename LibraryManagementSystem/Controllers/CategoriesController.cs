@@ -6,10 +6,12 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using LibraryManagementSystem.Data;
 using LibraryManagementSystem.Models;
 
 namespace LibraryManagementSystem.Controllers
 {
+    [Authorize(Roles = Constants.Admin)]
     public class CategoriesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();

@@ -6,11 +6,13 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using LibraryManagementSystem.Data;
 using LibraryManagementSystem.Models;
 using LibraryManagementSystem.ViewModels;
 
 namespace LibraryManagementSystem.Controllers
 {
+    [Authorize(Roles = Constants.Admin)]
     public class BooksController : Controller
     {
         private readonly ApplicationDbContext db = new ApplicationDbContext();
@@ -22,6 +24,7 @@ namespace LibraryManagementSystem.Controllers
             return View(books.ToList());
         }
 
+        [Authorize(Roles = Constants.Employee)]
         public ActionResult EmployeeIndex()
         {
             var books = db.Books.Include(b => b.Category);

@@ -1,0 +1,308 @@
+﻿@model LibraryManagementSystem.Models.SellingInvoice
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2 class="my-3">New Selling Invoice</h2>
+
+@*@using (Html.BeginForm("Create", "SellingInvoices", FormMethod.Post, new { @class = "row" }))
+    {*@
+<form class="row">
+
+    @*@Html.AntiForgeryToken()*@
+
+    @*@Html.ValidationSummary(true, "", new { @class = "text-danger" })*@
+
+    <!-- Customer Name and Date -->
+    <div class="col-md-6 col-6">
+        <div class="form-group">
+            @Html.LabelFor(model => model.CustomerId, htmlAttributes: new { @class = "control-label col-md-6" })
+            <div class="col-md-10">
+                <select tabindex="-1" data-placeholder="Choose a Customer" name="CustomerId" class="form-select chosen-select" id="customers" required>
+                    <option></option>
+                </select>
+                @Html.ValidationMessageFor(model => model.CustomerId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-6">
+        <div class="form-group">
+            <label class="control-label col-md-6">Date</label>
+            <div class="col-md-10">
+                <input type="text" disabled value="@ViewBag.Date" class="form-text" name="Date" />
+            </div>
+        </div>
+    </div>
+
+    <hr class="my-4" />
+
+    <!-- Item Details -->
+
+    <div class="col-md-3 col-3">
+        <div class="form-group">
+            <label class="control-label col-md-12">Books</label>
+            <div class="col-md-10">
+                <select tabindex="-1" data-placeholder="Choose a Book" class="form-select chosen-select" id="books" required>
+                    <option></option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3 col-3">
+        <div class="form-group">
+            <label class="control-label col-md-12">Unit Price $</label>
+            <input type="number" class="form-control" disabled id="price" value="0" />
+        </div>
+    </div>
+
+    <div class="col-md-3 col-3">
+        <div class="form-group">
+            <label class="control-label col-md-12">Quantity</label>
+            <input type="number" class="form-control" min="0" required id="itmQty" />
+        </div>
+    </div>
+
+    <div class="col-md-3 col-3">
+        <div class="form-group">
+            <input type="button" onclick="AddItem()" class="btn btn-success mt-4" value="Add" />
+        </div>
+    </div>
+
+    <hr class="my-2" />
+
+    <!-- Invoice Items-->
+    <table class="table" id="itemsTable">
+        <thead>
+            <tr>
+                <th> Book Name </th>
+                <th> Quantity </th>
+                <th> Unit Price $ </th>
+                <th> Sub Total $</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody id="items">
+        </tbody>
+    </table>
+
+    <hr class="my-2" />
+
+    <!-- Check Out -->
+
+    <div class="col-md-3 col-3">
+        <div class="form-group">
+            <label class="control-label col-md-6">Sub Total $</label>
+            <input type="number" class="form-control" disabled id="subTotal" value="0" />
+        </div>
+    </div>
+
+    <div class="col-md-3 col-3">
+        <div class="form-group">
+            <label class="control-label col-md-6">Discount %</label>
+            @if (User.IsInRole("Admin"))
+            {
+                <input type="number" class="form-control" min="0" max="100" id="disscount" value="0" required />
+            }
+            else
+            {
+                <input type="number" class="form-control" min="0" max="100" id="disscount" value="0" required disabled />
+                <span>only admin can make disscount</span>
+            }
+        </div>
+    </div>
+
+    <div class="col-md-3 col-3">
+        <div class="form-group">
+            <label class="control-label col-md-6">Total $</label>
+            <input type="number" class="form-control" disabled id="total" value="0" />
+        </div>
+    </div>
+
+    <div class="col-md-3 col-3">
+        <div class="form-group">
+            <input class="btn btn-primary mt-4" value="Check Out" onclick="AddInvoice()" />
+        </div>
+    </div>
+</form>
+@*}*@
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        let total = 0;
+        let subTotal = 0;
+        let disscount = 0;
+        let selectedBooks = [];
+
+        $(function () {
+
+            getCustomers();
+
+            getBooks();
+
+            $("#books").change(function () {
+                var price = getBookPrice($("#books option:selected").val());
+                updatePrice(price);
+            });
+
+            $("#disscount").change(function () {
+                var v = parseInt(this.value);
+                if (v < 1) this.value = 1;
+                if (v > 100) this.value = 100;
+                disscount = $("#disscount").val();
+                total = subTotal - parseInt(subTotal * disscount / 100, 10);
+                $("#total").val(total);
+            });
+
+        });
+
+        function getCustomers() {
+            var customers = @Html.Raw(Json.Encode(ViewBag.Customers));
+                var select = document.getElementById("customers");
+                for (var i = 0; i < customers.length; i++) {
+                    var option = document.createElement('option');
+                    option.value = customers[i].Id;
+                    option.text = customers[i].Name;
+                    select.appendChild(option);
+                }
+                $("#customers").chosen();
+        }
+
+        function getBooks() {
+            var books = @Html.Raw(Json.Encode(ViewBag.Books));
+            var select = document.getElementById("books");
+            for (var i = 0; i < books.length; i++) {
+                var option = document.createElement('option');
+                option.value = books[i].Id;
+                option.text = books[i].Name;
+                select.appendChild(option);
+            }
+            $("#books").chosen();
+        }
+
+        function getBookPrice(bookId) {
+            bookId = Number(bookId);
+            var books = @Html.Raw(Json.Encode(ViewBag.Books));
+            for (var i = 0; i < books.length; i++) {
+                if (books[i].Id == bookId) {
+                    return books[i].Price;
+                }
+            }
+            return 0;
+        }
+
+        function updatePrice(price) {
+            $('#price').val(price);
+        }
+
+        function AddItem() {
+            var bookId = $("#books option:selected").val();
+            var price = Number($('#price').val());
+            var quantity = Number($('#itmQty').val());
+            if (price == 0 || quantity == 0) {
+                alert("Error!\nChoose Book and Enter Quantity!");
+            }
+            else {
+                // Check if not in selectedBooks
+                if (bookExists(bookId)) {
+                    alert("Error!\nBook already Exists in invoice!");
+                    return;
+                }
+                // CheckQuantity
+                quantityAvalible(bookId, quantity, price);
+            }
+        }
+
+        function bookExists(bookId) {
+            for (var i = 0; i < selectedBooks.length; i++) {
+                if (selectedBooks[i].BookId == bookId)
+                    return true;
+            }
+            return false;
+        }
+
+        function quantityAvalible(bookId, quantity, price) {
+            var url = "/SellingInvoices/IsQuantityAvailable";
+
+            $.ajax({
+                url: url,//Method to call
+                data: { bookId: bookId, quantity: quantity },//Pass data to method if needed
+                type: 'GET',
+                success: function (data) {
+                    if (data === 'False') {
+                        alert("Error\n Ordered quantity is more than avalible quantity!");
+                    } else {
+                        addBook(bookId, quantity, price)
+                    }
+                }
+            })
+        }
+
+        function addBook(bookId, quantity, price) {
+            var bookName = $("#books option:selected").text();
+            var row = `<tr>
+                                <td>${bookName}</td>
+                                <td>${quantity}</td>
+                                <td>${price}</td>
+                                <td>${quantity * price}</td>
+                                <td></td>
+                           </tr>`
+            $('#itemsTable tr:last').after(row);
+            subTotal += (quantity * price);
+            total = subTotal - parseInt(subTotal * disscount / 100, 10);
+            $("#total").val(total);
+            $("#subTotal").val(subTotal);
+            selectedBooks.push({ BookId: bookId, Quantity: quantity, SubTotal: quantity * price });
+        }
+
+        function AddInvoice() {
+            var CustomerId = $("#customers option:selected").val();
+            var SubTotal = $("#subTotal").val();
+            var Total = $("#total").val();
+
+            if (CustomerId == "") {
+                alert("Error!\nPlease Select Customer!");
+                return;
+            }
+            if (selectedBooks.length == 0) {
+                alert("Error!\nSelect Some Books!");
+                return;
+            }
+
+            var sellingInvoice = {
+                CustomerId: CustomerId,
+                SubTotal: SubTotal,
+                Discount: disscount,
+                Total: Total,
+                Items: selectedBooks
+            };
+            PostInvoice(sellingInvoice);
+            //console.log(sellingInvoice);
+        }
+
+        function PostInvoice(sellingInvoice) {
+            var url = "/SellingInvoices/Create"
+            $.ajax({
+                url: url,
+                data: sellingInvoice,
+                type: 'POST',
+                success: function () {
+                    alert("Successfully Added!");
+                },
+                error: function (err) {
+                    console.log("Error\n" + err.responseText);
+                }
+            })
+        }
+
+        
+
+    </script>
+}

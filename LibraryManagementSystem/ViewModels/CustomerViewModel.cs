@@ -62,4 +62,11 @@ namespace LibraryManagementSystem.ViewModels
         [Display(Name = "City")]
         public string City { get; set; }
     }
+
+    public class CustomerSelectViewModel
+    {
+        public int Id { get; set; }
+        [Display(Name = "Customer Name")]
+        public string Name { get; set; }
+    }
 }

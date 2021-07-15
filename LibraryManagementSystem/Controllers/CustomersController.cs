@@ -12,6 +12,7 @@ using LibraryManagementSystem.ViewModels;
 
 namespace LibraryManagementSystem.Controllers
 {
+    [Authorize]
     public class CustomersController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();

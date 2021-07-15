@@ -30,4 +30,12 @@ namespace LibraryManagementSystem.ViewModels
         [Display(Name = "Fine / Day $")]
         public int FinePerDay { get; set; }
     }
+
+    public class BookSelectViewModel
+    {
+        public int Id { get; set; }
+        [Display(Name = "Book Name")]
+        public string Name { get; set; }
+        public int Price { get; set; }
+    }
 }

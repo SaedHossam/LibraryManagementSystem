@@ -11,7 +11,7 @@ namespace LibraryManagementSystem.Models
         public int Id { get; set; }
 
         [Display(Name ="Customer Name")]
-        public int CusomerId { get; set; }
+        public int CustomerId { get; set; }
         public virtual Customer Customer { get; set; }
 
         [DataType(DataType.Date)]
@@ -24,7 +24,7 @@ namespace LibraryManagementSystem.Models
         public int Total { get; set; }
 
         [Display(Name ="Payment Method")]
-        public int PaymentMethodId { get; set; }
+        public int? PaymentMethodId { get; set; }
         public virtual PaymentMethod PaymentMethod { get; set; }
         public int? CreditCardId { get; set; }
         public virtual CreditCard CreditCard { get; set; }

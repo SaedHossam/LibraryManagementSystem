@@ -12,7 +12,7 @@ namespace LibraryManagementSystem.Models
         public virtual SellingInvoice SellingInvoice { get; set; }
         public int BookId { get; set; }
         public virtual Book Book { get; set; }
-        public int Quabtity { get; set; }
+        public int Quantity { get; set; }
         public int SubTotal { get; set; }
 
     }
