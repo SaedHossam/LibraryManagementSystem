@@ -4,34 +4,17 @@
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
+<h2>Invoice Details</h2>
 
 <div>
-    <h4>SellingInvoice</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.CreditCard.CardHolderName)
+            @Html.DisplayNameFor(model => model.Customer.Name)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.CreditCard.CardHolderName)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.PaymentMethod.Name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.PaymentMethod.Name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.CustomerId)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.CustomerId)
+            @Html.DisplayFor(model => model.Customer.Name)
         </dd>
 
         <dt>
@@ -68,7 +51,27 @@
 
     </dl>
 
+    <h3>Items</h3>
 
+    <table class="table">
+        <tr>
+            <th> Book Name </th>
+            <th> Quantity </th>
+            <th> Unit Price $ </th>
+            <th> Sub Total $</th>
+        </tr>
+
+        @foreach (var i in Model.SellingInvoiceItems)
+        {
+            <tr>
+                <td> @i.Book.Name </td>
+                <td> @i.Quantity </td>
+                <td> @i.Book.PriceOfSelling $ </td>
+                <td> @i.SubTotal $</td>
+            </tr>
+        }
+
+    </table>
 </div>
 <p>
     @*@Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |*@

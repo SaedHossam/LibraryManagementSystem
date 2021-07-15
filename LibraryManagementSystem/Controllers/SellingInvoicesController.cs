@@ -44,7 +44,10 @@ namespace LibraryManagementSystem.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            SellingInvoice sellingInvoice = db.SellingInvoices.Find(id);
+            SellingInvoice sellingInvoice = db.SellingInvoices
+                .Include(s => s.Customer)
+                .Include(s =>s.SellingInvoiceItems.Select(i => i.Book))
+                .Where(s => s.Id == id).FirstOrDefault();
             if (sellingInvoice == null)
             {
                 return HttpNotFound();

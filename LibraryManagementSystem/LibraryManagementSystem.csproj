@@ -183,6 +183,10 @@
     <Compile Include="Migrations\202107150239057_Initial.Designer.cs">
       <DependentUpon>202107150239057_Initial.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202107151657564_update-dateDataType-inCustomersAndInvoices.cs" />
+    <Compile Include="Migrations\202107151657564_update-dateDataType-inCustomersAndInvoices.Designer.cs">
+      <DependentUpon>202107151657564_update-dateDataType-inCustomersAndInvoices.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\BasicInvoice.cs" />
@@ -343,6 +347,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202107150239057_Initial.resx">
       <DependentUpon>202107150239057_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202107151657564_update-dateDataType-inCustomersAndInvoices.resx">
+      <DependentUpon>202107151657564_update-dateDataType-inCustomersAndInvoices.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

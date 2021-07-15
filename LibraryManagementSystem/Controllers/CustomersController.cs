@@ -115,6 +115,7 @@ namespace LibraryManagementSystem.Controllers
             {
                 return HttpNotFound();
             }
+            //customer.DateOfBirth = customer.DateOfBirth;
             ViewBag.CityId = new SelectList(db.Cities, "Id", "Name", customer.CityId);
             ViewBag.CountryId = new SelectList(db.Countries, "Id", "Name", customer.CountryId);
             ViewBag.JobTitleId = new SelectList(db.JobTitles, "Id", "Name", customer.JobTitleId);

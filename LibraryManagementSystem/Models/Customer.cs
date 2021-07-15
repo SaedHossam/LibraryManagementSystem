@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
@@ -23,6 +24,8 @@ namespace LibraryManagementSystem.Models
         public virtual JobTitle JobTitle { get; set; }
         [Display(Name = "Date of Birth")]
         [DataType(DataType.Date)]
+        [Column(TypeName = "date")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
         public DateTime DateOfBirth { get; set; }
         [Required]
         public string Email { get; set; }
